@@ -20,11 +20,10 @@ engineered.** Quality and real functionality over number of modules.
   **4. Cymru ASN + RDAP ✅** · **5. Certificate Transparency ✅** ·
   **6. TI provider architecture + AbuseIPDB ✅** · **7A. VirusTotal ✅** ·
   **7B. URLhaus ✅** · **8. Intelligence correlation ✅** ·
-  **9. MalwareBazaar ✅**. A public README has not been written yet
-  (it needs the repository URL).
+  **9. MalwareBazaar ✅**. Public README: `README.md`.
 - Crates are added to the workspace when their step starts (no empty crates).
-- **Repository URL: not decided yet.** Never invent one. Placeholders are
-  marked `TODO(repository-url)`; search for that tag when the URL is known.
+- **Repository URL:** <https://github.com/TorranceTech/sentinel-osint> (set once, as `repository` in the workspace
+  `Cargo.toml`; the HTTP `User-Agent` reads it from there).
 - Scope of v0.1 is defined in [MVP scope](#mvp-scope-v01). Everything else lives in
   the [ROADMAP](#roadmap) and must **not** be implemented yet.
 

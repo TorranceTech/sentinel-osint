@@ -13,8 +13,7 @@ version = "0.1.0"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 authors = ["The Sentinel OSINT contributors"]
-# TODO(repository-url): set `repository` once the public GitHub URL exists.
-# Search the codebase for "TODO(repository-url)" to find every placeholder.
+repository = "https://github.com/TorranceTech/sentinel-osint"
 
 [workspace.dependencies]
 sentinel-core = { path = "crates/core", version = "0.1.0" }

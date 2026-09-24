@@ -158,6 +158,7 @@ async fn sends_the_tool_user_agent() {
         .await
         .unwrap();
     assert!(user_agent().starts_with("sentinel-osint/"));
+    assert!(user_agent().ends_with(" (+https://github.com/TorranceTech/sentinel-osint)"));
 }
 
 // ---------------------------------------------------------- time and size

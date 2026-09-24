@@ -467,4 +467,4 @@ A source must be documented here before it is implemented.
 
 Users are responsible for complying with each source's terms of service and
 rate limits. Sentinel identifies itself with a `User-Agent` of
-`sentinel-osint/<version> (+<repository URL>)`.
+`sentinel-osint/<version> (+https://github.com/TorranceTech/sentinel-osint)`.

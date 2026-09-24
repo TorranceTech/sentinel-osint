@@ -28,23 +28,19 @@ pub use client::HttpClient;
 pub use message::{HttpRequest, HttpResponse};
 pub use policy::{MAX_REDIRECTS, NetworkPolicy, PolicyViolation, check_ip};
 
-/// Public project URL for the `User-Agent` header.
-///
-/// TODO(repository-url): set this once the public repository exists. This is
-/// the only place the User-Agent URL is defined. Until then the User-Agent
-/// carries no URL. Never invent one.
-const PROJECT_URL: Option<&str> = None;
-
-/// The `User-Agent` sent with every request: `sentinel-osint/<version>`,
-/// plus `(+<project URL>)` once a URL is configured. It identifies the tool,
-/// never the user.
+/// The `User-Agent` sent with every request:
+/// `sentinel-osint/<version> (+<repository URL>)`. It identifies the tool,
+/// never the user. The URL comes from the workspace `repository` field.
 #[must_use]
 pub fn user_agent() -> String {
-    let base = concat!("sentinel-osint/", env!("CARGO_PKG_VERSION"));
-    match PROJECT_URL {
-        Some(url) => format!("{base} (+{url})"),
-        None => base.to_owned(),
-    }
+    concat!(
+        "sentinel-osint/",
+        env!("CARGO_PKG_VERSION"),
+        " (+",
+        env!("CARGO_PKG_REPOSITORY"),
+        ")"
+    )
+    .to_owned()
 }
 
 /// Configuration of the HTTP client.
