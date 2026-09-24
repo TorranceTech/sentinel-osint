@@ -1,0 +1,20 @@
+# Build output
+/target/
+
+# Secrets — API keys must never be committed
+.env
+.env.*
+*.key
+/config.toml
+*.local.toml
+
+# Investigation output may contain sensitive incident data
+/output/
+/investigations/
+*.stix.json
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store

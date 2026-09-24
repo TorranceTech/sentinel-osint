@@ -1,0 +1,47 @@
+Sentinel OSINT
+Threat Intelligence Investigation
+
+Target:    45.33.32.156
+Type:      IPv4
+Started:   2026-09-23 17:40:12 UTC
+Duration:  0.2 s
+ID:        00000000-0000-0000-0000-000000000000
+
+Infrastructure
+────────────────────────────────────────────────────────────
+45.33.32.156
+  ASN           (not collected)
+  Network       (not collected)
+
+Threat Intelligence
+────────────────────────────────────────────────────────────
+  Provider claims as reported; not verified or scored by Sentinel.
+
+  Provider      abuseipdb (last 90 days)
+  IP            45.33.32.156
+  Metric        abuse_confidence_score = 95 / 100
+  Metric        total_reports = 41
+  Metric        num_distinct_users = 12
+  Last reported 2026-09-20 17:40 UTC
+  Usage type    Data Center/Web Hosting/Transit
+  ISP           �]0;x
+  Domain        example.net
+  Country       US
+  Context from  IPinfo (as reported by AbuseIPDB)
+
+Findings (1)
+────────────────────────────────────────────────────────────
+  INFO    ti.abuseipdb.high_abuse_confidence
+          AbuseIPDB reports a high abuse confidence score
+          AbuseIPDB reports an abuse confidence score of 95/100 for
+          45.33.32.156.
+
+Sources
+────────────────────────────────────────────────────────────
+  abuseipdb  succeeded   1 observation   0.1 s
+
+Evidence
+────────────────────────────────────────────────────────────
+  Observations    1 (1 with response digest)
+  Relationships   0
+  Details         --format json (IDs, provenance, timestamps, digests)

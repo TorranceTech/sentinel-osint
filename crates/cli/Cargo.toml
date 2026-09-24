@@ -1,0 +1,30 @@
+[package]
+name = "sentinel-cli"
+description = "Command-line interface of Sentinel OSINT"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "sentinel-osint"
+path = "src/main.rs"
+
+[dependencies]
+sentinel-core.workspace = true
+sentinel-collectors.workspace = true
+sentinel-correlation.workspace = true
+sentinel-report.workspace = true
+
+anyhow.workspace = true
+clap.workspace = true
+secrecy.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+
+[lints]
+workspace = true

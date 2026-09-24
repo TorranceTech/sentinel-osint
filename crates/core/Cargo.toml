@@ -1,0 +1,26 @@
+[package]
+name = "sentinel-core"
+description = "Domain model for Sentinel OSINT: indicators, evidence, relationships and findings"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+# chrono is used without its `clock` feature on purpose: the core never reads
+# the system clock. Callers pass timestamps in, which keeps the model
+# deterministic and testable.
+chrono.workspace = true
+idna.workspace = true
+serde.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+url.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

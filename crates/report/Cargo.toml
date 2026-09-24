@@ -1,0 +1,20 @@
+[package]
+name = "sentinel-report"
+description = "Renderers for Sentinel OSINT investigations: table and JSON"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+sentinel-core.workspace = true
+sentinel-correlation.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+chrono.workspace = true
+url.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,70 @@
+Sentinel OSINT
+Threat Intelligence Investigation
+
+Target:    example.com
+Type:      Domain
+Started:   2026-09-23 17:40:12 UTC
+Duration:  0.2 s
+ID:        00000000-0000-0000-0000-000000000000
+
+DNS
+────────────────────────────────────────────────────────────
+A
+  93.184.215.14
+AAAA
+  2606:2800:21f:cb07:6820:80da:af6b:8b2c
+CNAME
+  (none)
+MX
+  10 mail.example.com
+NS
+  a.iana-servers.net
+  b.iana-servers.net
+SOA
+  ns.icann.org noc.dns.icann.org (serial 2026092301)
+TXT
+  "v=spf1 -all"
+  "google-site-verification=abc123"
+CAA
+  (none)
+
+Security Analysis
+────────────────────────────────────────────────────────────
+SPF
+  Status:  Present (1 record)
+  Record:  "v=spf1 -all"
+DMARC
+  Status:  Present (1 record)
+  Record:  "v=DMARC1; p=reject; rua=mailto:dmarc@example.com"
+CAA
+  Status:  Not found
+
+Findings (4)
+────────────────────────────────────────────────────────────
+  INFO    dns.spf.hardfail
+          SPF policy: -all (fail)
+          Mail from hosts not listed in the SPF record fails SPF.
+
+  INFO    dns.dmarc.policy_reject
+          DMARC policy: reject
+          Receivers are asked to reject messages that fail DMARC.
+
+  INFO    dns.dmarc.aggregate_reporting
+          DMARC aggregate reports requested
+          rua: mailto:dmarc@example.com
+
+  INFO    dns.caa.missing
+          No CAA records
+          No CAA records at example.com. Parent domains were not checked; if
+          none of them publish CAA either, any certificate authority may issue
+          certificates for this name.
+
+Sources
+────────────────────────────────────────────────────────────
+  dns  succeeded   11 observations   0.2 s
+
+Evidence
+────────────────────────────────────────────────────────────
+  Observations    11 (9 with response digest)
+  Relationships   1
+  Details         --format json (IDs, provenance, timestamps, digests)

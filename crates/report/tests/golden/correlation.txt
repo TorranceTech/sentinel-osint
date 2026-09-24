@@ -1,0 +1,212 @@
+Sentinel OSINT
+Threat Intelligence Investigation
+
+Target:    example.com
+Type:      Domain
+Started:   2026-09-23 17:40:12 UTC
+Duration:  0.2 s
+ID:        00000000-0000-0000-0000-000000000000
+
+DNS
+────────────────────────────────────────────────────────────
+A
+  93.184.215.14
+AAAA
+  (not collected)
+CNAME
+  (not collected)
+MX
+  (not collected)
+NS
+  (not collected)
+SOA
+  (not collected)
+TXT
+  (not collected)
+CAA
+  (not collected)
+
+Security Analysis
+────────────────────────────────────────────────────────────
+SPF
+  Status:  Unknown (lookup failed or not performed)
+DMARC
+  Status:  Unknown (lookup failed or not performed)
+CAA
+  Status:  Unknown (lookup failed or not performed)
+
+Infrastructure
+────────────────────────────────────────────────────────────
+93.184.215.14
+  ASN           AS15133
+  BGP prefix    93.184.215.0/24
+  Network       (unnamed)
+  Range         93.184.215.0 – 93.184.215.255
+  CIDR          93.184.215.0/24
+
+Threat Intelligence
+────────────────────────────────────────────────────────────
+  Provider claims as reported; not verified or scored by Sentinel.
+
+  Provider      virustotal
+  Indicator     example.com
+  Metric        last_analysis_stats.malicious = 3
+  Metric        last_analysis_stats.suspicious = 0
+  Metric        last_analysis_stats.undetected = 20
+  Metric        last_analysis_stats.harmless = 60
+  Metric        last_analysis_stats.timeout = 0
+  Community     0 (provider-defined score)
+  Last analysis not reported
+
+  Provider      urlhaus
+  Indicator     example.com
+  Record        none (the provider has no record of it)
+
+  Provider      urlhaus
+  Indicator     93.184.215.14
+  Record        listed in the provider's database
+  Reported      blacklists.surbl = listed
+
+  Provider      abuseipdb (last 90 days)
+  IP            93.184.215.14
+  Metric        total_reports = 0
+  Last reported never / not in window
+
+Findings (0)
+────────────────────────────────────────────────────────────
+  No findings.
+
+Correlation (5)
+────────────────────────────────────────────────────────────
+  Derived from the observations above without new lookups. Relations, claims
+  and disagreements are shown with their evidence; nothing is scored or
+  ranked.
+
+  [1] correlation.domain_ip_infrastructure · corr-<id>
+    example.com resolves to 93.184.215.14 (DNS); 93.184.215.14 is announced by
+    AS15133 (BGP origin); 93.184.215.14 is registered in 93.184.215.0/24
+    (registry). Each link cites its own observations; nothing here is an
+    ownership or maliciousness claim.
+    Link      example.com --resolves_to--> 93.184.215.14
+              ↳ dns · 2026-09-23 17:40:12.150 UTC · confidence 90 · sha256
+              a379a6f6eeaf…
+    Link      93.184.215.14 --announced_by--> AS15133
+              ↳ cymru · 2026-09-23 17:40:12.160 UTC · confidence 90 · sha256
+              808fd5d5c1f7…
+    Link      93.184.215.14 --registered_in--> 93.184.215.0/24
+              ↳ rdap · 2026-09-23 17:40:12.160 UTC · confidence 90 · sha256
+              808fd5d5c1f7…
+    Observed  2026-09-23 17:40:12.150 UTC – 2026-09-23 17:40:12.160 UTC
+    Evidence  3 observation(s); lowest capture confidence 90 (evidence
+              quality, not likelihood of maliciousness)
+    Note      A BGP origin and a registry allocation describe routing and
+              registration context; they do not establish who operates the
+              address, ownership or intent.
+    Note      The observations were collected at different times; they may not
+              describe the same moment or state.
+
+  [2] correlation.multiple_sources · corr-<id>
+    2 providers report on example.com: urlhaus (no_record), virustotal
+    (flags). Each claim is the provider's own.
+    Claim     urlhaus · no_record · no record
+              ↳ urlhaus · 2026-09-23 17:40:12.190 UTC · confidence 90 · sha256
+              737e8d683025…
+    Claim     virustotal · flags · last_analysis_stats.malicious=3,
+              last_analysis_stats.suspicious=0,
+              last_analysis_stats.undetected=20,
+              last_analysis_stats.harmless=60, last_analysis_stats.timeout=0,
+              community_score=0
+              ↳ virustotal · 2026-09-23 17:40:12.170 UTC · confidence 90 ·
+              sha256 28d46654d818…
+    Observed  2026-09-23 17:40:12.170 UTC – 2026-09-23 17:40:12.190 UTC
+    Evidence  2 observation(s); lowest capture confidence 90 (evidence
+              quality, not likelihood of maliciousness)
+    Note      Each provider made its own classification with its own data and
+              methods; the claims are listed, not combined, weighted or
+              scored.
+    Note      The observations were collected at different times; they may not
+              describe the same moment or state.
+
+  [3] correlation.multiple_sources · corr-<id>
+    2 providers report on 93.184.215.14: abuseipdb (does_not_flag), urlhaus
+    (flags). Each claim is the provider's own.
+    Claim     abuseipdb · does_not_flag · total_reports=0
+              ↳ abuseipdb · 2026-09-23 17:40:12.180 UTC · confidence 90 ·
+              sha256 e50dc83089ab…
+    Claim     urlhaus · flags · listed, blacklists.surbl=listed
+              ↳ urlhaus · 2026-09-23 17:40:12.190 UTC · confidence 60 · no
+              digest
+    Observed  2026-09-23 17:40:12.180 UTC – 2026-09-23 17:40:12.190 UTC
+    Evidence  2 observation(s); lowest capture confidence 60 (evidence
+              quality, not likelihood of maliciousness)
+    Note      Each provider made its own classification with its own data and
+              methods; the claims are listed, not combined, weighted or
+              scored.
+    Note      The observations were collected at different times; they may not
+              describe the same moment or state.
+
+  [4] correlation.source_disagreement · corr-<id>
+    Provider claims about example.com disagree; both sides are kept with their
+    evidence.
+    Claim     urlhaus · no_record · no record
+              ↳ urlhaus · 2026-09-23 17:40:12.190 UTC · confidence 90 · sha256
+              737e8d683025…
+    Claim     virustotal · flags · last_analysis_stats.malicious=3,
+              last_analysis_stats.suspicious=0,
+              last_analysis_stats.undetected=20,
+              last_analysis_stats.harmless=60, last_analysis_stats.timeout=0,
+              community_score=0
+              ↳ virustotal · 2026-09-23 17:40:12.170 UTC · confidence 90 ·
+              sha256 28d46654d818…
+    Conflict  For example.com, virustotal report(s) something while urlhaus
+              do(es) not (urlhaus: no_record).
+              ↳ virustotal · 2026-09-23 17:40:12.170 UTC · confidence 90 ·
+              sha256 28d46654d818…
+              ↳ urlhaus · 2026-09-23 17:40:12.190 UTC · confidence 90 · sha256
+              737e8d683025…
+    Observed  2026-09-23 17:40:12.170 UTC – 2026-09-23 17:40:12.190 UTC
+    Evidence  2 observation(s); lowest capture confidence 90 (evidence
+              quality, not likelihood of maliciousness)
+    Note      Each provider made its own classification with its own data and
+              methods; the claims are listed, not combined, weighted or
+              scored.
+    Note      Sentinel does not decide which provider is right; a disagreement
+              is neither a verdict of maliciousness nor of benign use.
+    Note      The observations were collected at different times; they may not
+              describe the same moment or state.
+
+  [5] correlation.source_disagreement · corr-<id>
+    Provider claims about 93.184.215.14 disagree; both sides are kept with
+    their evidence.
+    Claim     abuseipdb · does_not_flag · total_reports=0
+              ↳ abuseipdb · 2026-09-23 17:40:12.180 UTC · confidence 90 ·
+              sha256 e50dc83089ab…
+    Claim     urlhaus · flags · listed, blacklists.surbl=listed
+              ↳ urlhaus · 2026-09-23 17:40:12.190 UTC · confidence 60 · no
+              digest
+    Conflict  For 93.184.215.14, urlhaus report(s) something while abuseipdb
+              do(es) not (abuseipdb: does_not_flag).
+              ↳ abuseipdb · 2026-09-23 17:40:12.180 UTC · confidence 90 ·
+              sha256 e50dc83089ab…
+              ↳ urlhaus · 2026-09-23 17:40:12.190 UTC · confidence 60 · no
+              digest
+    Observed  2026-09-23 17:40:12.180 UTC – 2026-09-23 17:40:12.190 UTC
+    Evidence  2 observation(s); lowest capture confidence 60 (evidence
+              quality, not likelihood of maliciousness)
+    Note      Each provider made its own classification with its own data and
+              methods; the claims are listed, not combined, weighted or
+              scored.
+    Note      Sentinel does not decide which provider is right; a disagreement
+              is neither a verdict of maliciousness nor of benign use.
+    Note      The observations were collected at different times; they may not
+              describe the same moment or state.
+
+Sources
+────────────────────────────────────────────────────────────
+  dns  succeeded   1 observation   0.2 s
+
+Evidence
+────────────────────────────────────────────────────────────
+  Observations    7 (6 with response digest)
+  Relationships   3
+  Details         --format json (IDs, provenance, timestamps, digests)

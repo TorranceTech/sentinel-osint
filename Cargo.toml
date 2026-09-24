@@ -1,0 +1,70 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/core",
+    "crates/collectors",
+    "crates/correlation",
+    "crates/report",
+    "crates/cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+authors = ["The Sentinel OSINT contributors"]
+# TODO(repository-url): set `repository` once the public GitHub URL exists.
+# Search the codebase for "TODO(repository-url)" to find every placeholder.
+
+[workspace.dependencies]
+sentinel-core = { path = "crates/core", version = "0.1.0" }
+sentinel-collectors = { path = "crates/collectors", version = "0.1.0" }
+sentinel-correlation = { path = "crates/correlation", version = "0.1.0" }
+sentinel-report = { path = "crates/report", version = "0.1.0" }
+
+anyhow = "1.0"
+clap = { version = "4.6", features = ["derive"] }
+
+chrono = { version = "0.4.45", default-features = false, features = ["std", "serde"] }
+idna = "1.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.11"
+thiserror = "2.0"
+url = "2.5"
+uuid = { version = "1.26", features = ["v4", "serde"] }
+
+# Networking (sentinel-collectors)
+# reqwest: no default features -> no system proxy (would bypass the SSRF-safe
+# resolver), no automatic decompression (decompression bombs), no cookies.
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "http2"] }
+secrecy = "0.10"
+# DNS: system configuration + Tokio only (no DoH/DoT/QUIC/DNSSEC features).
+hickory-resolver = { version = "0.26.3", default-features = false, features = ["system-config", "tokio"] }
+tokio = { version = "1.53", features = ["rt", "time", "sync", "net"] }
+tracing = "0.1.44"
+
+# Logging output (CLI) and log capture (tests). No ANSI colors, no env-filter.
+tracing-subscriber = { version = "0.3.23", default-features = false, features = ["fmt"] }
+
+# Test-only
+proptest = "1.11"
+wiremock = "0.6.5"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+unreachable_pub = "warn"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "warn"
+expect_used = "warn"
+dbg_macro = "warn"
+todo = "warn"
+print_stdout = "warn"
+print_stderr = "warn"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

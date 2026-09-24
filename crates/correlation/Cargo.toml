@@ -1,0 +1,23 @@
+[package]
+name = "sentinel-correlation"
+description = "Explainable, I/O-free correlation of Sentinel OSINT investigations"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+# No I/O by construction: only the domain model, serialization and hashing.
+# `tests/no_io.rs` enforces this list.
+[dependencies]
+sentinel-core.workspace = true
+serde.workspace = true
+sha2.workspace = true
+
+[dev-dependencies]
+chrono.workspace = true
+proptest.workspace = true
+serde_json.workspace = true
+url.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,43 @@
+Sentinel OSINT
+Threat Intelligence Investigation
+
+Target:    8.8.8.8
+Type:      IPv4
+Started:   2026-09-23 17:40:12 UTC
+Duration:  0.2 s
+ID:        00000000-0000-0000-0000-000000000000
+
+Infrastructure
+────────────────────────────────────────────────────────────
+8.8.8.8
+  ASN           AS15169  GOOGLE, US
+  BGP prefix    8.8.8.0/24
+  Registry      arin · US · allocated 2023-12-28
+  Network       GOGL (NET-8-8-8-0-2)
+  Range         8.8.8.0 – 8.8.8.255
+  CIDR          8.8.8.0/24
+  Type          DIRECT ALLOCATION
+  Organization  Google LLC
+  Country       US
+  Dates         registered 2014-03-14 · last changed 2014-03-14
+  Abuse contact network-abuse@google.com
+
+Findings (1)
+────────────────────────────────────────────────────────────
+  INFO    asn.origin
+          BGP origin reported
+          8.8.8.8 is announced by AS15169 (GOOGLE, US) in prefix 8.8.8.0/24,
+          according to the source. A BGP origin identifies the network
+          announcing the route; it does not establish ownership, control or
+          intent.
+
+Sources
+────────────────────────────────────────────────────────────
+  cymru  succeeded   2 observations   0.1 s
+  rdap   succeeded   1 observation   0.1 s
+
+Evidence
+────────────────────────────────────────────────────────────
+  Observations    3 (3 with response digest)
+  Relationships   2
+  Details         --format json (IDs, provenance, timestamps, digests)
