@@ -7,9 +7,7 @@
 //! private/loopback refusal, resolver filtering, size caps) is the production
 //! code path.
 
-use std::io;
 use std::net::SocketAddr;
-use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
 use reqwest::header::HeaderName;
@@ -21,6 +19,7 @@ use wiremock::matchers::{header, method, path};
 use wiremock::{Mock, MockServer, ResponseTemplate};
 
 use super::*;
+use crate::testing::global_log_capture;
 
 const SECRET: &str = "sk-TEST-SECRET-must-never-appear";
 
@@ -551,44 +550,9 @@ async fn production_client_refuses_non_https_and_non_public_before_any_io() {
 
 // ------------------------------------------------------ secrets and logs
 
-/// Captures everything logged through `tracing` on this thread.
-#[derive(Clone, Default)]
-struct LogCapture(Arc<Mutex<Vec<u8>>>);
-
-impl io::Write for LogCapture {
-    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        self.0.lock().unwrap().extend_from_slice(buf);
-        Ok(buf.len())
-    }
-    fn flush(&mut self) -> io::Result<()> {
-        Ok(())
-    }
-}
-
-impl<'a> tracing_subscriber::fmt::MakeWriter<'a> for LogCapture {
-    type Writer = Self;
-    fn make_writer(&'a self) -> Self::Writer {
-        self.clone()
-    }
-}
-
-impl LogCapture {
-    fn contents(&self) -> String {
-        String::from_utf8_lossy(&self.0.lock().unwrap()).into_owned()
-    }
-}
-
 #[tokio::test]
 async fn secrets_never_appear_in_logs_or_errors() {
-    let logs = LogCapture::default();
-    let subscriber = tracing_subscriber::fmt()
-        .with_max_level(tracing::Level::TRACE)
-        .with_writer(logs.clone())
-        .finish();
-    let _guard = tracing::subscriber::set_default(subscriber);
-    // Other tests run in parallel without this subscriber; drop callsite
-    // interest they cached so this thread's events are not filtered out.
-    tracing::callsite::rebuild_interest_cache();
+    let logs = global_log_capture();
 
     let api = MockServer::start().await;
     let attacker = MockServer::start().await;
@@ -640,9 +604,10 @@ async fn secrets_never_appear_in_logs_or_errors() {
     );
 
     let captured = logs.contents();
+    let marker = format!("127.0.0.1:{}/ok", api.address().port());
     assert!(
-        captured.contains("sending request"),
-        "logging must be active:\n{captured}"
+        captured.contains("sending request") && captured.contains(&marker),
+        "logging must be active"
     );
     assert!(captured.contains("REDACTED"));
     for leak in [SECRET, "URL-SECRET-must-never-appear"] {
@@ -659,15 +624,7 @@ async fn secrets_never_appear_in_logs_or_errors() {
 
 #[tokio::test]
 async fn logged_endpoints_cannot_inject_log_lines() {
-    let logs = LogCapture::default();
-    let subscriber = tracing_subscriber::fmt()
-        .with_max_level(tracing::Level::DEBUG)
-        .with_writer(logs.clone())
-        .finish();
-    let _guard = tracing::subscriber::set_default(subscriber);
-    // Other tests run in parallel without this subscriber; drop callsite
-    // interest they cached so this thread's events are not filtered out.
-    tracing::callsite::rebuild_interest_cache();
+    let logs = global_log_capture();
 
     let server = MockServer::start().await;
     Mock::given(method("GET"))
@@ -680,13 +637,22 @@ async fn logged_endpoints_cannot_inject_log_lines() {
         .await
         .unwrap();
 
+    // The capture is shared with tests running in parallel: find this
+    // test's lines by the mock server's port.
     let captured = logs.contents();
-    assert!(captured.contains("sending request"));
+    let marker = format!("127.0.0.1:{}/a", server.address().port());
+    let ours: Vec<&str> = captured.lines().filter(|l| l.contains(&marker)).collect();
+    assert!(
+        ours.iter().any(|l| l.contains("sending request")),
+        "logging must be active"
+    );
     for line in captured.lines() {
         assert!(
             !line.trim_start().starts_with("FORGED-LOG-LINE"),
-            "log injection:\n{captured}"
+            "log injection: {line}"
         );
-        assert!(!line.contains('\u{1b}'), "raw escape in log:\n{captured}");
+    }
+    for line in ours {
+        assert!(!line.contains('\u{1b}'), "raw escape in log: {line}");
     }
 }
