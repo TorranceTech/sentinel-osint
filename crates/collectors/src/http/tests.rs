@@ -586,6 +586,9 @@ async fn secrets_never_appear_in_logs_or_errors() {
         .with_writer(logs.clone())
         .finish();
     let _guard = tracing::subscriber::set_default(subscriber);
+    // Other tests run in parallel without this subscriber; drop callsite
+    // interest they cached so this thread's events are not filtered out.
+    tracing::callsite::rebuild_interest_cache();
 
     let api = MockServer::start().await;
     let attacker = MockServer::start().await;
@@ -662,6 +665,9 @@ async fn logged_endpoints_cannot_inject_log_lines() {
         .with_writer(logs.clone())
         .finish();
     let _guard = tracing::subscriber::set_default(subscriber);
+    // Other tests run in parallel without this subscriber; drop callsite
+    // interest they cached so this thread's events are not filtered out.
+    tracing::callsite::rebuild_interest_cache();
 
     let server = MockServer::start().await;
     Mock::given(method("GET"))
