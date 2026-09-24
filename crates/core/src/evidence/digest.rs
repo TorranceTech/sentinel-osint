@@ -57,9 +57,10 @@ impl FromStr for Sha256Digest {
             return Err(DigestParseError);
         }
         let mut out = [0u8; 32];
-        for (slot, pair) in out.iter_mut().zip(bytes.chunks_exact(2)) {
-            let hi = hex_value(pair[0]).ok_or(DigestParseError)?;
-            let lo = hex_value(pair[1]).ok_or(DigestParseError)?;
+        // `bytes.len() == 64` was checked above, so `2 * i + 1 < 64`.
+        for (i, slot) in out.iter_mut().enumerate() {
+            let hi = hex_value(bytes[2 * i]).ok_or(DigestParseError)?;
+            let lo = hex_value(bytes[2 * i + 1]).ok_or(DigestParseError)?;
             *slot = (hi << 4) | lo;
         }
         Ok(Self(out))
